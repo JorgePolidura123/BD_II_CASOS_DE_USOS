@@ -30,5 +30,42 @@ const options = {
 	   Behind_the_Scenes:{type:String}
    });*/
    
+   const actorSchema = new mongoose.Schema({
+      actor_id:{type:Number},
+      first_name:{type:String},
+      last_name:{type:String},
+      last_update:{type:Date, default: Date.now}
+   })
+
+   const filmSchema = new mongoose.Schema({
+      film_id:{type:Number},
+      title:{type:String},
+      description:{type:String},
+      release_year:{type:Date ,default: Date.now},
+      language_id:{type:Number},
+      original_language_id:{type:Number ,default:null},
+      rental_duration:{type:String},
+      rental_rate:{type:mongoose.Types.Decimal128},
+      lenght:{type:Number},
+      replacement_cost:{type:mongoose.Types.Decimal128},
+      rating:{type:String, enum:['G', 'PG', 'PG-13', 'R', 'NC-17'], default: 'G'},
+      special_features:{type:[{type:String}], default: [] },
+      last_update:{type:Date, default: Date.now}
+   })
    
-  
+  let Actor = new mongoose.model('Actor' , actorSchema);
+  let Film = new mongoose.model('Film' , filmSchema);
+  console.log(query.Actor);
+  console.log(query.Film);
+
+  try {
+    let inserted_a = await Actor.insertMany(query.actor);
+    let inserted_b = await Film.insertMany(query.film);
+    process.exit(0);
+  }
+  catch (e) {
+    console.log('Some error');
+    console.log(e);
+    process.exit(0);
+
+  }
